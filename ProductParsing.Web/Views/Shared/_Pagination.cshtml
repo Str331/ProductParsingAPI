@@ -1,0 +1,20 @@
+@model PaginationViewModel
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Сторінки каталогу" class="mt-4">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li class="page-item @(Model.Page <= 1 ? "disabled" : null)">
+                <a class="page-link" href="@Model.UrlFor(Math.Min(Model.Page, Model.TotalPages + 1) - 1)">Попередня</a>
+            </li>
+            @for (var pageNumber = 1; pageNumber <= Model.TotalPages; pageNumber++)
+            {
+                <li class="page-item @(pageNumber == Model.Page ? "active" : null)">
+                    <a class="page-link" href="@Model.UrlFor(pageNumber)">@pageNumber</a>
+                </li>
+            }
+            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : null)">
+                <a class="page-link" href="@Model.UrlFor(Model.Page + 1)">Наступна</a>
+            </li>
+        </ul>
+    </nav>
+}

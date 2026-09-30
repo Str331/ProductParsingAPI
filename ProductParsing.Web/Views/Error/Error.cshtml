@@ -1,0 +1,7 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Помилка";
+}
+<h1 class="h3 text-danger">Сталася помилка (@Model.StatusCode)</h1>
+<p>Спробуйте ще раз пізніше. Якщо помилка повторюється, повідомте код запиту: <code>@Model.RequestId</code>.</p>
+<a href="/" class="btn btn-primary">До каталогу</a>

@@ -1,0 +1,15 @@
+@using System.Security.Claims
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="d-flex align-items-center gap-2" id="user-menu">
+        <span class="navbar-text">@User.Identity?.Name</span>
+        <span class="badge text-bg-secondary" id="user-role">@User.FindFirst(ClaimTypes.Role)?.Value</span>
+        <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Вийти</button>
+        </form>
+    </div>
+}
+else
+{
+    <a class="btn btn-outline-primary btn-sm" asp-controller="Account" asp-action="Login" id="login-link">Увійти</a>
+}

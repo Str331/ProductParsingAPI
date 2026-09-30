@@ -1,0 +1,12 @@
+@model ImportFormModel
+<form method="post" asp-controller="Import" asp-action="Import" class="mb-4" id="import-form" data-busy-on-submit>
+    <label asp-for="ListingUrl" class="form-label"></label>
+    <div class="input-group">
+        <input asp-for="ListingUrl" type="url" class="form-control" placeholder="https://shop.example.com/catalog/smartphones/" required />
+        <button type="submit" class="btn btn-primary">
+            <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+            Парсити
+        </button>
+    </div>
+    <div class="form-text">Сторінка каталогу або картка товару будь-якого інтернет-магазину. Імпорт може тривати до 2 хвилин.</div>
+</form>

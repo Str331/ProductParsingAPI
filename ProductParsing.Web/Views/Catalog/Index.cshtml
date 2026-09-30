@@ -1,0 +1,44 @@
+@model CatalogViewModel
+@{
+    ViewData["Title"] = "Каталог";
+}
+<h1 class="h3 mb-3">Каталог товарів</h1>
+
+@if (Model.CanImport)
+{
+    <partial name="_ImportForm" model="Model.ImportForm" />
+}
+else
+{
+    <p class="text-muted" id="import-login-hint">
+        <a asp-controller="Account" asp-action="Login">Увійдіть</a>, щоб імпортувати товари з інтернет-магазину.
+    </p>
+}
+
+@if (Model.ImportError is not null)
+{
+    <div class="alert alert-danger" id="import-error" role="alert">@Model.ImportError</div>
+}
+
+@if (Model.ImportReport is not null)
+{
+    <partial name="_ImportReport" model="Model.ImportReport" />
+}
+
+@if (Model.Products.Data.Count == 0)
+{
+    <p class="text-muted" id="catalog-empty">На цій сторінці товарів немає.</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 g-4" id="catalog-grid">
+        @foreach (var product in Model.Products.Data)
+        {
+            <div class="col">
+                <partial name="_ProductCard" model="new ProductCardViewModel { Product = product, CanManage = Model.CanManageProducts, ReturnUrl = Model.ReturnUrl }" />
+            </div>
+        }
+    </div>
+}
+
+<partial name="_Pagination" model='new PaginationViewModel { Page = Model.Products.Page, TotalPages = Model.Products.TotalPages, BasePath = "/" }' />

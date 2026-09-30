@@ -1,0 +1,36 @@
+@model ImportReportViewModel
+<div class="alert @(Model.HasProblems ? "alert-warning" : "alert-success")" id="import-report" role="status"
+     data-found="@Model.Found" data-added="@Model.Added" data-skipped="@Model.Skipped"
+     data-failed="@Model.FailedCount" data-warnings="@Model.WarningCount">
+    <strong>Імпорт завершено.</strong>
+    Знайдено: @Model.Found · додано: @Model.Added · пропущено (вже в каталозі): @Model.Skipped ·
+    помилок: @Model.FailedCount · попереджень: @Model.WarningCount.
+    @if (Model.TimedOut)
+    {
+        <div class="mt-1">Час імпорту вичерпано, збережено лише оброблені товари. Запустіть імпорт ще раз, щоб додати решту.</div>
+    }
+    @if (Model.Failed.Count > 0 || Model.Warnings.Count > 0)
+    {
+        <details class="mt-2">
+            <summary>Деталі</summary>
+            <ul class="mb-0 small">
+                @foreach (var issue in Model.Failed)
+                {
+                    <li class="text-danger"><a href="@issue.Url" target="_blank" rel="noopener noreferrer nofollow">@issue.Url</a>: @issue.Reason</li>
+                }
+                @if (Model.HiddenFailures > 0)
+                {
+                    <li>… і ще @Model.HiddenFailures помилок</li>
+                }
+                @foreach (var issue in Model.Warnings)
+                {
+                    <li><a href="@issue.Url" target="_blank" rel="noopener noreferrer nofollow">@issue.Url</a>: @issue.Reason</li>
+                }
+                @if (Model.HiddenWarnings > 0)
+                {
+                    <li>… і ще @Model.HiddenWarnings попереджень</li>
+                }
+            </ul>
+        </details>
+    }
+</div>

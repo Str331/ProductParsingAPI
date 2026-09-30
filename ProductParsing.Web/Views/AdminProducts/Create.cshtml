@@ -1,0 +1,14 @@
+@model ProductFormModel
+@{
+    ViewData["Title"] = "Новий товар";
+}
+<h1 class="h3 mb-3">Новий товар</h1>
+<form method="post" asp-action="Create" enctype="multipart/form-data" id="product-form">
+    <partial name="_ProductForm" model="Model" />
+    <button type="submit" class="btn btn-success">Зберегти</button>
+    <a asp-action="Index" class="btn btn-link">Скасувати</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

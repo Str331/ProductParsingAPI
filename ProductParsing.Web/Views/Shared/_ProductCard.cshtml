@@ -1,0 +1,41 @@
+@model ProductCardViewModel
+@{
+    var product = Model.Product;
+    var descriptionId = $"description-{product.ID}";
+}
+<article class="card h-100 product-card" data-product-id="@product.ID">
+    <div class="product-card__image">
+        @if (product.HasImage)
+        {
+            <img src="/products/@product.ID/image" alt="@product.Name" loading="lazy" />
+        }
+        else
+        {
+            <span class="product-card__placeholder text-muted small">Без зображення</span>
+        }
+    </div>
+    <div class="card-body d-flex flex-column">
+        <h2 class="h5 card-title product-card__name">@product.Name</h2>
+        @if (product.Description is not null)
+        {
+            <p class="card-text product-card__description" id="@descriptionId">@product.Description</p>
+            <button type="button" class="btn btn-link p-0 align-self-start" data-description-toggle
+                    aria-controls="@descriptionId" aria-expanded="false">Показати повністю</button>
+        }
+        @if (product.SourceUrl is not null)
+        {
+            <a href="@product.SourceUrl" class="small mt-auto pt-2" target="_blank" rel="noopener noreferrer nofollow">Відкрити на @product.SourceHost</a>
+        }
+    </div>
+    @if (Model.CanManage)
+    {
+        <div class="card-footer d-flex gap-2 product-card__admin">
+            <a asp-controller="AdminProducts" asp-action="Edit" asp-route-id="@product.ID" asp-route-returnUrl="@Model.ReturnUrl"
+               class="btn btn-sm btn-outline-primary">Редагувати</a>
+            <form method="post" asp-controller="AdminProducts" asp-action="Delete" asp-route-id="@product.ID"
+                  asp-route-returnUrl="@Model.ReturnUrl" data-confirm="Видалити «@product.Name»?">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Видалити</button>
+            </form>
+        </div>
+    }
+</article>

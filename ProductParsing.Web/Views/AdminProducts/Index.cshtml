@@ -1,0 +1,55 @@
+@model PagedResponse<AdminProductModel>
+@{
+    ViewData["Title"] = "Адмін-панель";
+    var returnUrl = Model.Page > 1 ? $"/admin/products?page={Model.Page}" : "/admin/products";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Адмін-панель: товари</h1>
+    <a asp-action="Create" class="btn btn-success" id="create-product-link">Додати товар</a>
+</div>
+
+@if (Model.Data.Count == 0)
+{
+    <p class="text-muted" id="admin-empty">Товарів немає.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle" id="admin-products">
+            <thead>
+                <tr>
+                    <th scope="col">Фото</th>
+                    <th scope="col">Назва</th>
+                    <th scope="col">Джерело</th>
+                    <th scope="col">Додано (UTC)</th>
+                    <th scope="col" class="text-end">Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.Data)
+                {
+                    <tr data-product-id="@product.ID">
+                        <td>
+                            @if (product.HasImage)
+                            {
+                                <img src="/products/@product.ID/image" alt="" class="admin-thumb" loading="lazy" />
+                            }
+                        </td>
+                        <td>@product.Name</td>
+                        <td>@(product.SourceHost ?? "вручну")</td>
+                        <td>@product.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Edit" asp-route-id="@product.ID" asp-route-returnUrl="@returnUrl" class="btn btn-sm btn-outline-primary">Редагувати</a>
+                            <form method="post" asp-action="Delete" asp-route-id="@product.ID" asp-route-returnUrl="@returnUrl"
+                                  class="d-inline" data-confirm="Видалити «@product.Name»?">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Видалити</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<partial name="_Pagination" model='new PaginationViewModel { Page = Model.Page, TotalPages = Model.TotalPages, BasePath = "/admin/products" }' />

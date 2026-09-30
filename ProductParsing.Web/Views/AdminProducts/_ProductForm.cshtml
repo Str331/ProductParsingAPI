@@ -1,0 +1,21 @@
+@model ProductFormModel
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" id="form-errors" role="alert"></div>
+}
+<div class="mb-3">
+    <label asp-for="Name" class="form-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Description" class="form-label"></label>
+    <textarea asp-for="Description" class="form-control" rows="8"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Image" class="form-label"></label>
+    <input asp-for="Image" type="file" class="form-control" accept="image/jpeg,image/png,image/webp,image/gif" />
+    <div class="form-text">JPEG, PNG, WEBP або GIF, до 2 МБ.</div>
+    <span asp-validation-for="Image" class="text-danger"></span>
+</div>

@@ -1,0 +1,50 @@
+@model ProductFormModel
+@{
+    ViewData["Title"] = "Редагування товару";
+}
+<h1 class="h3 mb-3">Редагування товару</h1>
+@if (Model.SourceUrl is not null)
+{
+    <p class="text-muted small">Імпортовано з <a href="@Model.SourceUrl" target="_blank" rel="noopener noreferrer nofollow">@Model.SourceUrl</a></p>
+}
+<form method="post" asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data" id="product-form">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="HasImage" />
+    <input type="hidden" asp-for="SourceUrl" />
+    <input type="hidden" asp-for="ReturnUrl" />
+
+    <partial name="_ProductForm" model="Model" />
+
+    @if (Model.HasImage)
+    {
+        <div class="mb-3">
+            <img src="/products/@Model.Id/image" alt="Поточне зображення" class="admin-preview" id="current-image" />
+        </div>
+    }
+
+    <fieldset class="mb-3">
+        <legend class="form-label fs-6">Що зробити із зображенням</legend>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="ImageAction" value="Keep" id="image-keep" />
+            <label class="form-check-label" for="image-keep">Залишити</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="ImageAction" value="Replace" id="image-replace" />
+            <label class="form-check-label" for="image-replace">Замінити обраним файлом</label>
+        </div>
+        @if (Model.HasImage)
+        {
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="ImageAction" value="Remove" id="image-remove" />
+                <label class="form-check-label" for="image-remove">Видалити</label>
+            </div>
+        }
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <a href="@(Model.ReturnUrl ?? "/admin/products")" class="btn btn-link">Скасувати</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
